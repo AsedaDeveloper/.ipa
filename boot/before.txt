@@ -1,0 +1,10 @@
+# Radxa headless first-boot config.
+# Copy THIS file to the FAT "boot" partition of the flashed microSD (it mounts
+# on macOS as a drive, e.g. /Volumes/boot or /Volumes/rootfs's boot dir).
+# It runs ONCE on first boot to join WiFi, then deletes itself.
+# To change the network later you must reflash + redo this file.
+#
+# Replace the SSID and PASSWORD below. Keep it on ONE line.
+# If your SSID or password has spaces, this simple parser may not handle it —
+# pick a space-free test network or use the serial console instead.
+connect_wi-fi YOUR_WIFI_SSID YOUR_WIFI_PASSWORD

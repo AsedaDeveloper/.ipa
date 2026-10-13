@@ -11,8 +11,15 @@ Open the official download page and grab the latest **release** image
 
 - https://docs.radxa.com/en/cubie/a7z/download
 
-Pick a Debian build (KDE desktop, or a CLI/server build if you want it
-headless). It arrives as `*.img.xz`.
+**Pick the Debian 11 CLI (R6) image, not KDE.** The A7Z is a headless camera
+appliance — the CLI build is ~4 GB vs ~7 GB for KDE, boots faster, and wastes
+no CPU/RAM on a desktop. (The English download page may only show KDE; the CLI
+R6 image for SD/eMMC is listed on the same page's other locale / the
+`radxa-a733` releases. Grab the CLI one.) It arrives as `*.img.xz`.
+
+> **The A7Z has NO Ethernet** (Wi-Fi 6 only), so you must pre-configure Wi-Fi
+> before first boot — see §1.4. This is why your earlier flash was invisible:
+> Raspberry Pi Imager's Wi-Fi/SSH presets are ignored by Radxa images.
 
 > Also note the two community Debian 12/13 builders in case you want a newer
 > userland later: `github.com/cuihuir/radxa-a7z-debian12` and
@@ -48,6 +55,24 @@ diskutil eject /dev/diskN
 
 ⚠️ `dd` to the wrong `/dev/diskN` wipes that disk irreversibly. If unsure, use
 Etcher.
+
+## 1.4 Pre-configure Wi-Fi (REQUIRED — no Ethernet on this board)
+
+After flashing, the FAT **boot** partition mounts on your Mac as a drive. Drop a
+`before.txt` there with one line (template in `boot/before.txt`):
+
+```
+connect_wi-fi YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
+```
+
+- It runs **once** on first boot to join Wi-Fi, then deletes itself (to change
+  the network later, reflash).
+- **SSH is enabled by default** on a headless (no-display) boot, so once it's on
+  Wi-Fi you can `ssh radxa@<ip>` straight away.
+- Prefer a **space-free SSID/password** for this step; the parser is simple.
+
+Or let the helper script flash **and** write this in one go:
+`scripts/prepare-sdcard-macos.sh` (run on your Mac).
 
 ## 1.3 Boot
 
